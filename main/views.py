@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from .models import Client, Project
 import json
 
-# ✅ 1. List all clients / Create client
 @csrf_exempt
 def clients_list(request):
     if request.method == "GET":
@@ -29,7 +28,6 @@ def clients_list(request):
         })
 
 
-# ✅ 2. Retrieve / Update / Delete client
 @csrf_exempt
 def client_detail(request, client_id):
     try:
@@ -38,7 +36,6 @@ def client_detail(request, client_id):
         return JsonResponse({"error": "Client not found"}, status=404)
 
     if request.method == "GET":
-        # projects = list(client.projects.all().values("id", "project_name"))
         projects = []
         for project in client.projects.all():
             projects.append({
@@ -78,8 +75,6 @@ def client_detail(request, client_id):
         client.delete()
         return JsonResponse({}, status=204)
 
-
-# ✅ 3. Create project under client
 @csrf_exempt
 def create_project(request, client_id):
     if request.method == "POST":
@@ -106,7 +101,6 @@ def create_project(request, client_id):
         })
 
 
-# ✅ 4. List projects assigned to logged-in user
 def my_projects(request):
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Login required"}, status=401)
